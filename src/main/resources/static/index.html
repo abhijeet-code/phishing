@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing SMS Detector</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            resize: vertical;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 1.1em;
+            color: #333;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .result-safe {
+            color: green;
+            border: 1px solid green;
+        }
+
+        .result-danger {
+            color: red;
+            border: 1px solid red;
+        }
+
+        ul {
+            margin-top: 10px;
+            padding-left: 20px;
+            list-style-type: disc;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Phishing SMS Detector</h1>
+
+        <form id="smsForm">
+            <label for="smsContent">Enter SMS Content:</label><br><br>
+            <textarea id="smsContent" name="smsContent" rows="4" placeholder="Enter SMS text to check..." required></textarea><br><br>
+            <button type="submit">Check for Phishing</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // Handle form submission
+        document.getElementById('smsForm').addEventListener('submit', function (event) {
+            event.preventDefault();  // Prevent form from submitting the default way
+
+            const smsContent = document.getElementById('smsContent').value;
+
+            // Make AJAX call to the Spring Boot backend
+            fetch('http://localhost:8080/api/phishing/detect-sms', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ smsContent: smsContent }),
+            })
+            .then(response => response.text())  // Parsing as text (you could also parse as JSON if needed)
+            .then(result => {
+                // Parsing the result and structuring the output with bullet points
+                const resultElement = document.getElementById('result');
+                let safeText = result.split('Categories:')[0];
+                let categoriesText = result.split('Categories:')[1];
+                let categories = categoriesText ? categoriesText.split(', ') : [];
+
+                // Set the result content with proper structure
+                resultElement.innerHTML = `<strong>${safeText}</strong>`;
+                
+                if (categories.length > 0) {
+                    let categoryList = '<ul>';
+                    categories.forEach(category => {
+                        categoryList += `<li>${category}</li>`;
+                    });
+                    categoryList += '</ul>';
+                    resultElement.innerHTML += categoryList;
+                }
+
+                // Apply different styles for safe or dangerous URL results
+                if (safeText.includes('Safe URL')) {
+                    resultElement.className = 'result-safe';
+                } else {
+                    resultElement.className = 'result-danger';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').textContent = 'Error connecting to the server';
+            });
+        });
+    </script>
+</body>
+</html>
