@@ -1,153 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phishing SMS Detector</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Phishing SMS Detector</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
 
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            width: 100%;
-        }
+    .container {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      max-width: 650px;
+      width: 90%;
+      animation: fadeIn 1s ease-in-out;
+    }
 
-        h1 {
-            text-align: center;
-            color: #333;
-        }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        label {
-            font-size: 1.1em;
-            color: #555;
-        }
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 2em;
+      color: #ffffffdd;
+    }
 
-        textarea {
-            width: 100%;
-            padding: 10px;
-            font-size: 1em;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            resize: vertical;
-        }
+    label {
+      font-size: 1.1em;
+      margin-bottom: 10px;
+      display: block;
+      color: #f0f0f0;
+    }
 
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-            width: 100%;
-        }
+    textarea {
+      width: 100%;
+      padding: 15px;
+      font-size: 1em;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      resize: vertical;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
 
-        button:hover {
-            background-color: #45a049;
-        }
+    button {
+      margin-top: 15px;
+      width: 100%;
+      padding: 12px 20px;
+      font-size: 1em;
+      font-weight: bold;
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      color: white;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
 
-        #result {
-            margin-top: 20px;
-            font-size: 1.1em;
-            color: #333;
-            padding: 15px;
-            background-color: #f9f9f9;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 114, 255, 0.4);
+    }
 
-        .result-safe {
-            color: green;
-            border: 1px solid green;
-        }
+    #result {
+      margin-top: 25px;
+      padding: 20px;
+      font-size: 1.1em;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      color: #fff;
+    }
 
-        .result-danger {
-            color: red;
-            border: 1px solid red;
-        }
+    .result-safe {
+      border-left: 6px solid #4CAF50;
+      background-color: rgba(76, 175, 80, 0.1);
+    }
 
-        ul {
-            margin-top: 10px;
-            padding-left: 20px;
-            list-style-type: disc;
-        }
+    .result-danger {
+      border-left: 6px solid #ff4c4c;
+      background-color: rgba(255, 76, 76, 0.1);
+    }
 
-    </style>
+    .logo {
+  width: 80px;
+  height: auto;
+  margin-bottom: 15px;
+  animation: fadeInLogo 1.2s ease;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+  border-radius: 50%;
+}
+
+@keyframes fadeInLogo {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+
+    ul {
+      margin-top: 10px;
+      padding-left: 20px;
+    }
+
+    li {
+      margin-bottom: 5px;
+    }
+
+    ::placeholder {
+      color: #bbb;
+    }
+  </style>
 </head>
 <body>
     <div class="container">
+        <div style="text-align: center;">
+          <img src="logo.png" alt="Phishing Detector Logo" class="logo" />
+        </div>
         <h1>Phishing SMS Detector</h1>
-
         <form id="smsForm">
-            <label for="smsContent">Enter SMS Content:</label><br><br>
-            <textarea id="smsContent" name="smsContent" rows="4" placeholder="Enter SMS text to check..." required></textarea><br><br>
-            <button type="submit">Check for Phishing</button>
+          <label for="smsContent">Enter SMS Content:</label>
+          <textarea id="smsContent" name="smsContent" rows="5" placeholder="Enter SMS text to check..." required></textarea>
+          <button type="submit">Check for Phishing</button>
         </form>
-
         <div id="result"></div>
-    </div>
+      </div>
+      
 
-    <script>
-        // Handle form submission
-        document.getElementById('smsForm').addEventListener('submit', function (event) {
-            event.preventDefault();  // Prevent form from submitting the default way
+  <script>
+    
+    document.getElementById('smsForm').addEventListener('submit', function (event) {
+      event.preventDefault(); 
 
-            const smsContent = document.getElementById('smsContent').value;
+      const smsContent = document.getElementById('smsContent').value;
 
-            // Make AJAX call to the Spring Boot backend
-            fetch('http://localhost:8080/api/phishing/detect-sms', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ smsContent: smsContent }),
-            })
-            .then(response => response.text())  // Parsing as text (you could also parse as JSON if needed)
-            .then(result => {
-                // Parsing the result and structuring the output with bullet points
-                const resultElement = document.getElementById('result');
-                let safeText = result.split('Categories:')[0];
-                let categoriesText = result.split('Categories:')[1];
-                let categories = categoriesText ? categoriesText.split(', ') : [];
+      //AJAX call to Spring-Boot backend
+      fetch('http://localhost:8080/api/phishing/detect-sms', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ smsContent: smsContent }),
+      })
+        .then(response => response.text())
+        .then(result => {
+          const resultElement = document.getElementById('result');
+          let safeText = result.split('Categories:')[0];
+          let categoriesText = result.split('Categories:')[1];
+          let categories = categoriesText
+  ? categoriesText.split(', ').filter(category => category.trim() !== '')
+  : [];
 
-                // Set the result content with proper structure
-                resultElement.innerHTML = `<strong>${safeText}</strong>`;
-                
-                if (categories.length > 0) {
-                    let categoryList = '<ul>';
-                    categories.forEach(category => {
-                        categoryList += `<li>${category}</li>`;
-                    });
-                    categoryList += '</ul>';
-                    resultElement.innerHTML += categoryList;
-                }
 
-                // Apply different styles for safe or dangerous URL results
-                if (safeText.includes('Safe URL')) {
-                    resultElement.className = 'result-safe';
-                } else {
-                    resultElement.className = 'result-danger';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('result').textContent = 'Error connecting to the server';
+          resultElement.innerHTML = `<strong>${safeText}</strong>`;
+
+          if (categories.length > 0) {
+            let categoryList = '<ul>';
+            categories.forEach(category => {
+              categoryList += `<li>${category}</li>`;
             });
+            categoryList += '</ul>';
+            resultElement.innerHTML += categoryList;
+          }
+
+          if (safeText.includes('Safe URL')) {
+            resultElement.className = 'result-safe';
+          } else {
+            resultElement.className = 'result-danger';
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          document.getElementById('result').textContent = 'Error connecting to the server';
         });
-    </script>
+    });
+  </script>
 </body>
 </html>
