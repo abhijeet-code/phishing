@@ -7,7 +7,7 @@ A Spring Boot application designed to detect phishing URLs embedded in SMS messa
 ## 🚀 Features
 - 🔍 **SMS Content Analysis**: Extracts URLs from SMS messages using regex patterns.
 - 🌐 **VirusTotal Integration**: Queries the VirusTotal API with Base64-encoded URLs to analyze their safety.
-- 📊 **Threat Classification**: Categorizes URLs as *Safe*, *Suspicious*, or *Malicious* based on VirusTotal's response.
+- 📊 **Threat Classification**: Categorizes URLs as *Safe*, *Suspicious*, or *Malicious* based on VirusTotal's response with detailed stats.
 - 🎨 **Frontend UI**: Provides a simple HTML/CSS/JavaScript form for inputting SMS content and displaying results with categorized bullet points.
 - ⚙️ **REST API**: Exposes a Spring Boot REST endpoint to process SMS checks.
 - 🛡️ **Secure Configuration**: Manages VirusTotal API key via `application.properties` for secure and flexible setup.
