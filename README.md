@@ -87,7 +87,7 @@ phishing-sms-detector/
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## 👨‍💻 Author
-Developed by [Your Name]
+Developed by [ABHIJEET DUBEY]
 
 ## 📞 Contact
 For questions or contributions, please open an issue or submit a pull request on the project's repository.
